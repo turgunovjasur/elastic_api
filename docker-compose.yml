@@ -1,18 +1,7 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    command: gunicorn --bind :8000 --workers 3 config.wsgi:application
-    volumes:
-      - .:/app
-      - static_volume:/app/staticfiles
-    ports:
-      - "8000:8000"
-    depends_on:
-      - elasticsearch
-    environment:
-      - "ELASTICSEARCH_URL=http://elasticsearch:9200"
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
     environment:
@@ -28,6 +17,18 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+  web:
+    build: .
+    command: gunicorn --bind :8000 --workers 3 config.wsgi:application
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      - elasticsearch
+    environment:
+      - "ELASTICSEARCH_URL=http://elasticsearch:9200"
 
 volumes:
   elasticsearch_data:

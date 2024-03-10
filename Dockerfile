@@ -19,10 +19,6 @@ COPY . /app/
 # Expose the port the app runs on
 EXPOSE 8000
 
-COPY ./docker-entrypoint.sh /
-RUN chmod +x /docker-entrypoint.sh
-# Set the entrypoint to your script
-ENTRYPOINT ["/docker-entrypoint.sh"]
 
 # Run the command to start Gunicorn
 CMD ["gunicorn", "--bind", ":8000", "--workers", "3", "config.wsgi:application"]
